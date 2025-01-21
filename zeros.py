@@ -50,9 +50,10 @@ pca.fit(zeros)
 print('Explained variance ratios % for first three PC:', [round(100*pca.explained_variance_ratio_[n], 2) for n in range(3)])
 components = pca.transform(zeros)
 for n in range(3):
-    plt.plot(components[:, n], label = 'PC'+str(n))
+    plt.plot(components[:, n], label = 'PC'+str(n+1))
 plt.legend(loc = 'upper right')
-plt.title('Time series of the first three PC')
+plt.xlabel('Time in Months')
+plt.title('Time series of the first three PC, 1990-2024')
 plt.show()
 print('First loading vector')
 print(pca.components_[0])
@@ -61,24 +62,25 @@ print(pca.components_[1])
 print('Third loading vector')
 print(pca.components_[2])
 for n in range(3):
-    plt.plot(pca.components_[n], label = 'PC'+str(n))
+    plt.plot(pca.components_[n], label = 'PC'+str(n+1))
 plt.legend(loc = 'upper right')
 plt.title('Loading factors for the first three PC')
+plt.xlabel('Maturity in years')
 plt.show()
 
 for n in range(3):
-    print('PC'+str(n), '\n')
+    print('PC'+str(n+1), '\n')
     series = components[:, n]
     print('ADF test p = ', adfuller(series)[1])
     reg = stats.linregress(series[:-1], numpy.diff(series))
     print(reg)
     res = numpy.array([numpy.diff(series)[k] - reg.slope * series[k] - reg.intercept for k in range(N-1)])
-    analysis(res, 'univariate original residuals for PC'+str(n))
-    plots(res, 'univariate original residuals for PC'+str(n))
+    analysis(res, 'univariate original residuals for PC'+str(n+1))
+    plots(res, 'univariate original residuals for PC'+str(n+1))
     print('\n')
     nres = res/vix[1:]
-    analysis(nres, 'univariate normalized residuals for PC'+str(n))
-    plots(nres, 'univariate normalized residuals for PC'+str(n))
+    analysis(nres, 'univariate normalized residuals for PC'+str(n+1))
+    plots(nres, 'univariate normalized residuals for PC'+str(n+1))
 
 level = components[:, 0]
 slope = components[:, 1]
